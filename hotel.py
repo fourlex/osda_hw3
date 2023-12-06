@@ -5,11 +5,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import Binarizer, KBinsDiscretizer, OneHotEncoder
 
 
-def load_hotel():
+def load_hotel(train_size=5000, test_size=200):
     hotel_booking = pd.read_csv('./data/hotel_booking.csv')
     hotel_booking_X = hotel_booking.drop(columns=['is_canceled', 'reservation_status'])
     hotel_booking_y = hotel_booking['is_canceled']
-    return train_test_split(hotel_booking_X, hotel_booking_y, test_size=0.2, random_state=0)
+    return train_test_split(hotel_booking_X, hotel_booking_y, train_size=train_size, test_size=test_size, random_state=0, stratify=hotel_booking_y)
 
 
 def transformers_hotel():

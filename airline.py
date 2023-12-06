@@ -4,11 +4,11 @@ from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import KBinsDiscretizer, OneHotEncoder
 
 
-def load_airline():
-    train = pd.read_csv('./data/airline_satisfaction_train.csv', index_col=0).set_index('id')
+def load_airline(train_size=5000, test_size=200):
+    train = pd.read_csv('./data/airline_satisfaction_train.csv', index_col=0).set_index('id').sample(train_size)
     X_train = train.drop(columns=['satisfaction'])
     y_train = pd.get_dummies(train['satisfaction'], drop_first=True, dtype=float).iloc[:, 0]
-    test = pd.read_csv('./data/airline_satisfaction_test.csv', index_col=0).set_index('id')
+    test = pd.read_csv('./data/airline_satisfaction_test.csv', index_col=0).set_index('id').sample(test_size)
     X_test = test.drop(columns=['satisfaction'])
     y_test = pd.get_dummies(test['satisfaction'], drop_first=True, dtype=float).iloc[:, 0]
     return X_train, X_test, y_train, y_test

@@ -1,0 +1,3 @@
+[submodule "FCALC"]
+	path = FCALC
+	url = https://github.com/AndrewDiv/FCALC.git
