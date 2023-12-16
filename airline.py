@@ -9,12 +9,14 @@ def load(train_size=5000, test_size=200):
     if train_size is not None:
         train = train.sample(train_size, random_state=0)
     X_train = train.drop(columns=['satisfaction'])
+    X_train['Arrival Delay in Minutes'] = X_train['Arrival Delay in Minutes'].fillna(0)
     y_train = pd.get_dummies(train['satisfaction'], drop_first=True, dtype=float).iloc[:, 0]
 
     test = pd.read_csv('./data/airline_satisfaction_test.csv', index_col=0).set_index('id')
     if test_size is not None:
         test = test.sample(test_size, random_state=0)
     X_test = test.drop(columns=['satisfaction'])
+    X_test['Arrival Delay in Minutes'] = X_test['Arrival Delay in Minutes'].fillna(0)
     y_test = pd.get_dummies(test['satisfaction'], drop_first=True, dtype=float).iloc[:, 0]
 
     return X_train, X_test, y_train, y_test
@@ -22,13 +24,13 @@ def load(train_size=5000, test_size=200):
 
 def binarizer():
     transformers = [
-        make_column_transformer(
-            (SimpleImputer(strategy='constant', fill_value=0), [
-                'Arrival Delay in Minutes'
-            ]),
-            verbose_feature_names_out=False,
-            remainder='passthrough'
-        ),
+        # make_column_transformer(
+        #     (SimpleImputer(strategy='constant', fill_value=0), [
+        #         'Arrival Delay in Minutes'
+        #     ]),
+        #     verbose_feature_names_out=False,
+        #     remainder='passthrough'
+        # ),
         make_column_transformer(
             (OneHotEncoder(drop='first', handle_unknown='ignore', sparse_output=False), [
                 'Gender',

@@ -7,6 +7,8 @@ from sklearn.preprocessing import Binarizer, KBinsDiscretizer, OneHotEncoder
 
 def load(train_size=5000, test_size=200):
     hotel_booking = pd.read_csv('./data/hotel_booking.csv')
+    hotel_booking['children'] = hotel_booking['children'].fillna(0)
+    hotel_booking = hotel_booking.drop(columns=['reservation_status_date', 'name', 'email', 'phone-number', 'credit_card', 'adr', 'required_car_parking_spaces', 'arrival_date_week_number', 'stays_in_weekend_nights', 'hotel', 'country', 'distribution_channel', 'is_repeated_guest', 'previous_bookings_not_canceled', 'previous_cancellations'])
     hotel_booking_X = hotel_booking.drop(columns=['is_canceled', 'reservation_status'])
     hotel_booking_y = hotel_booking['is_canceled']
     return train_test_split(hotel_booking_X, hotel_booking_y, train_size=train_size, test_size=test_size, random_state=0, stratify=hotel_booking_y)
@@ -14,11 +16,11 @@ def load(train_size=5000, test_size=200):
 
 def binarizer():
     transformers = [
-        make_column_transformer(
-            (SimpleImputer(strategy='constant', fill_value=0), ['children']),
-            verbose_feature_names_out=False,
-            remainder='passthrough'
-        ),
+        # make_column_transformer(
+        #     (SimpleImputer(strategy='constant', fill_value=0), ['children']),
+        #     verbose_feature_names_out=False,
+        #     remainder='passthrough'
+        # ),
         make_column_transformer(
             (OneHotEncoder(drop='first', handle_unknown='ignore', sparse_output=False), [
                 'deposit_type',
@@ -39,7 +41,7 @@ def binarizer():
                 'babies',
                 'booking_changes'
             ]),
-            ('drop', ['reservation_status_date', 'name', 'email', 'phone-number', 'credit_card', 'adr', 'required_car_parking_spaces', 'arrival_date_week_number', 'stays_in_weekend_nights', 'hotel', 'country', 'distribution_channel', 'is_repeated_guest', 'previous_bookings_not_canceled', 'previous_cancellations']),
+            # ('drop', ['reservation_status_date', 'name', 'email', 'phone-number', 'credit_card', 'adr', 'required_car_parking_spaces', 'arrival_date_week_number', 'stays_in_weekend_nights', 'hotel', 'country', 'distribution_channel', 'is_repeated_guest', 'previous_bookings_not_canceled', 'previous_cancellations']),
             remainder='drop'
         )
     ]
