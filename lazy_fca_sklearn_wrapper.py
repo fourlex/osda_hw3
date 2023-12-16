@@ -15,6 +15,7 @@ class MyBinarizedBinaryClassifier(BaseEstimator, ClassifierMixin):
         assert y.dtype == bool
         # assert np.all(np.isclose(X, 0) | np.isclose(X, 1))
         # assert np.all(np.isclose(y, 0) | np.isclose(y, 1))
+        # print(X)
         self.clf_ = fcalc.classifier.BinarizedBinaryClassifier(
             context=np.asarray(X, dtype=bool),
             labels=np.asarray(y, dtype=bool), 
@@ -41,8 +42,9 @@ class MyPatternBinaryClassifier(BaseEstimator, ClassifierMixin):
 
     def fit(self, X, y):
         # assert y.dtype == bool
+        # print(X)
         self.clf_ = fcalc.classifier.PatternBinaryClassifier(
-            context=X,
+            context=np.asarray(X, dtype=float),
             labels=np.asarray(y, dtype=bool), 
             support=self.support,
             method=self.method,
@@ -53,5 +55,6 @@ class MyPatternBinaryClassifier(BaseEstimator, ClassifierMixin):
         return self
     
     def predict(self, X):
-        self.clf_.predict(X)
+        # print(X)
+        self.clf_.predict(np.asarray(X, dtype=float))
         return self.clf_.predictions == 1
